@@ -1,0 +1,24 @@
+name: Sync to Aliyun Codeup
+
+on:
+  push:
+    branches:
+      - main  # 确认你的 GitHub 主分支是 main
+
+jobs:
+  sync:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0  # 获取完整历史记录
+
+      - name: Push to Aliyun Codeup
+        run: |
+          git remote add aliyun https://oauth2:${{ secrets.ALIYUN_TOKEN }}@codeup.aliyun.com/6465db85b60a10415c31fed8/xswc/ai/dify.git
+          git remote -v
+          git branch -a
+          git push aliyun main --force
+        env:
+          ALIYUN_TOKEN: ${{ secrets.ALIYUN_TOKEN }}
